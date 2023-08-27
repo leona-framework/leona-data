@@ -1,4 +1,4 @@
-package com.sylvona.leona.data.dynamodb.layout;
+package com.sylvona.leona.data.dynamodb.entity;
 
 import com.sylvona.leona.data.dynamodb.converter.ConverterRegistryFactory;
 import lombok.RequiredArgsConstructor;

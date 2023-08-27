@@ -22,5 +22,14 @@ public interface ConverterRegistry extends ConverterContext {
     );
 
     void addConverter(Type type, DatabaseItemConverter<?, ?> converter);
+
+    default void addConverter(DatabaseItemConverter<?, ?> converter) {
+        addConverter(converter.getTargetType(), converter);
+    }
+
+    default void addConverter(Class<? extends DatabaseItemConverter<?, ?>> converterClass) {
+        addConverter(ConverterCreator.createConverter(converterClass, null));
+    }
+
     <T> T parse(Type targetType, AttributeValue attributeValue);
 }

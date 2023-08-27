@@ -2,7 +2,7 @@ package com.sylvona.leona.data.dynamodb.repository;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.sylvona.leona.data.dynamodb.delegate.DynamoRepositoryDelegateFactory;
-import com.sylvona.leona.data.dynamodb.layout.EntityLayoutFactory;
+import com.sylvona.leona.data.dynamodb.entity.EntityLayoutFactory;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport;

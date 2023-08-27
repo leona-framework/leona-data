@@ -6,6 +6,8 @@ import com.sylvona.leona.data.dynamodb.delegate.DynamoRepositoryDelegateFactory;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 class DynamoRepositoryImpl<T, ID extends Serializable> implements DynamoRepository<T, ID> {
@@ -23,32 +25,43 @@ class DynamoRepositoryImpl<T, ID extends Serializable> implements DynamoReposito
 
     @Override
     public <S extends T> @NotNull Iterable<S> saveAll(@NotNull Iterable<S> entities) {
-        return null;
+        repositoryDelegate.putAll((Iterable<T>) entities);
+        return entities;
     }
 
     @Override
     public @NotNull Optional<T> findById(@NotNull ID id) {
-        return Optional.of(repositoryDelegate.get(id).result());
+        return Optional.ofNullable(repositoryDelegate.get(id).result());
+    }
+
+    @Override
+    public <RID> Optional<T> findById(ID id, RID rid) {
+        return Optional.ofNullable(repositoryDelegate.get(id, rid).result());
     }
 
     @Override
     public boolean existsById(@NotNull ID id) {
-        return false;
+        return findById(id).isPresent();
     }
 
     @Override
-    public @NotNull Iterable<T> findAll() {
-        return null;
+    public @NotNull List<T> findAll() {
+        return repositoryDelegate.getAll().result();
     }
 
     @Override
-    public @NotNull Iterable<T> findAllById(@NotNull Iterable<ID> ids) {
-        return null;
+    public <ID2> List<T> findAllById(Map<ID, Iterable<ID2>> hashAndRangeKeys) {
+        return repositoryDelegate.getAllById(hashAndRangeKeys).result();
+    }
+
+    @Override
+    public @NotNull List<T> findAllById(@NotNull Iterable<ID> ids) {
+        return repositoryDelegate.getAllById(ids).result();
     }
 
     @Override
     public long count() {
-        return 0;
+        return findAll().size();
     }
 
     @Override

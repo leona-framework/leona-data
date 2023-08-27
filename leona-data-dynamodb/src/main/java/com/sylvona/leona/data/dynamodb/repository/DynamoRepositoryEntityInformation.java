@@ -1,6 +1,6 @@
 package com.sylvona.leona.data.dynamodb.repository;
 
-import com.sylvona.leona.data.dynamodb.layout.EntityLayout;
+import com.sylvona.leona.data.dynamodb.entity.EntityLayout;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

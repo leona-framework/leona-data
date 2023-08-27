@@ -1,4 +1,4 @@
-package com.sylvona.leona.data.dynamodb.delegate;
+package com.sylvona.leona.data.dynamodb.delegate.results;
 
 import com.amazonaws.AmazonWebServiceResult;
 import com.amazonaws.ResponseMetadata;
@@ -6,6 +6,8 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ConsumedCapacity;
 import com.amazonaws.services.dynamodbv2.model.GetItemResult;
 import com.amazonaws.services.dynamodbv2.model.PutItemResult;
+import com.sylvona.leona.data.dynamodb.delegate.DynamoResultType;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
@@ -13,11 +15,11 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.function.Function;
 
-@Getter
-@Accessors(fluent = true)
+@Getter @Accessors(fluent = true)
 public class DynamoItemResult<T> implements DynamoResult<T> {
-    private final Duration executionTime;
+    @Getter(AccessLevel.NONE)
     private final Function<Map<String, AttributeValue>, T> resultResolver;
+    private final Duration executionTime;
     private final DynamoResultType resultType;
     private final AmazonWebServiceResult<ResponseMetadata> awsResult;
     private final ConsumedCapacity consumedCapacity;
@@ -76,10 +78,5 @@ public class DynamoItemResult<T> implements DynamoResult<T> {
     @Override
     public ConsumedCapacity getConsumedCapacity() {
         return consumedCapacity;
-    }
-
-    @Override
-    public Map<String, AttributeValue> getAttributes() {
-        return attributes;
     }
 }

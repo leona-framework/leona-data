@@ -1,7 +1,7 @@
 package com.sylvona.leona.data.dynamodb.delegate.filters;
 
-import com.sylvona.leona.data.dynamodb.delegate.DynamoItemResult;
-import com.sylvona.leona.data.dynamodb.delegate.DynamoResult;
+import com.sylvona.leona.data.dynamodb.delegate.results.DynamoItemResult;
+import com.sylvona.leona.data.dynamodb.delegate.results.DynamoResult;
 import com.sylvona.leona.data.dynamodb.delegate.DynamoResultType;
 
 public interface PostDynamoDBReadFilter extends PostDynamoDBFilter {

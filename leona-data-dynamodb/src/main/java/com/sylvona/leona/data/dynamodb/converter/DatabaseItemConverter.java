@@ -45,9 +45,11 @@ public abstract class DatabaseItemConverter<JavaType, DBType extends AttributeTy
      * @param context
      * @return
      */
-    public final @Nullable DBType shortCircuitToDatabase(JavaType javaType, ConverterContext context) {
+    public final @Nullable DBType shortCircuitToDatabase(Object javaType, ConverterContext context) {
         if (javaType == null && !canConvertNull()) return null;
-        return toDatabase(javaType, context);
+        if (javaType != null && !targetType.isInstance(javaType))
+            throw new ClassCastException("Cannot cast %s to %s".formatted(javaType.getClass(), targetType));
+        return toDatabase(targetType.cast(javaType), context);
     }
 
     public final JavaType parseAttributeValue(AttributeValue attributeValue, ConverterContext context) {

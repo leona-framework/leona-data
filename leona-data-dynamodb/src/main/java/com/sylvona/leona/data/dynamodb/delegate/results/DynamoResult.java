@@ -1,4 +1,4 @@
-package com.sylvona.leona.data.dynamodb.delegate;
+package com.sylvona.leona.data.dynamodb.delegate.results;
 
 import com.sylvona.leona.core.commons.containers.ExecutionView;
 
