@@ -8,6 +8,11 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.repository.core.EntityInformation;
 
+/**
+ * Default implementation of {@link EntityInformation} which lazily provides information to the internal DynamoDB delegate.
+ * @param <T> the entity type
+ * @param <ID> the primary key of the entity
+ */
 @Getter
 @RequiredArgsConstructor
 public class DynamoRepositoryEntityInformation<T, ID> implements EntityInformation<T, ID> {

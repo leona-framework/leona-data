@@ -25,11 +25,22 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.List;
 
+/**
+ * Auto-configuration class for setting up DynamoDB-related beans and components in the Leona Data module.
+ */
 @Slf4j
 @AutoConfiguration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(LeonaDataDynamoDBConfigurationSource.class)
 public class LeonaDataDynamoDbAutoConfiguration {
+    /**
+     * Creates and configures an Amazon DynamoDB client bean if no existing bean of this type is defined.
+     * This bean is used to interact with the DynamoDB service.
+     *
+     * @param beanFirstClassConstructor The bean-first class constructor for managing bean instantiation.
+     * @param configurationSource The configuration source for DynamoDB settings.
+     * @return An instance of the AmazonDynamoDB client.
+     */
     @Bean
     @ConditionalOnMissingBean(AmazonDynamoDB.class)
     public AmazonDynamoDB autoConfiguredAmazonDynamoDBClient(BeanFirstClassConstructor beanFirstClassConstructor, LeonaDataDynamoDBConfigurationSource configurationSource) {
@@ -45,18 +56,40 @@ public class LeonaDataDynamoDbAutoConfiguration {
                 .build();
     }
 
+    /**
+     * Creates and configures a DynamoRepositoryDelegateFactory bean if no existing bean of this type is defined.
+     * This bean is responsible for creating DynamoRepositoryDelegate instances.
+     *
+     * @param preDynamoFilters List of pre-DynamoDB execution filters.
+     * @param postDynamoFilters List of post-DynamoDB execution filters.
+     * @return An instance of the DynamoRepositoryDelegateFactory.
+     */
     @Bean
     @ConditionalOnMissingBean(DynamoRepositoryDelegateFactory.class)
     public DynamoRepositoryDelegateFactory delegateFactory(List<PreDynamoDBFilter> preDynamoFilters, List<PostDynamoDBFilter> postDynamoFilters) {
         return new FilterAwareDynamoRepositoryDelegateFactory(preDynamoFilters, postDynamoFilters);
     }
 
+    /**
+     * Creates and configures a ConverterRegistryFactory bean if no existing bean of this type is defined.
+     * This bean is responsible for creating ConverterRegistry instances.
+     *
+     * @param databaseItemConverters List of database item converters.
+     * @return An instance of the ConverterRegistryFactory.
+     */
     @Bean
     @ConditionalOnMissingBean(ConverterRegistryFactory.class)
     public ConverterRegistryFactory registryFactory(List<DatabaseItemConverter<?, ?>> databaseItemConverters) {
         return new DefaultConverterRegistryFactory(databaseItemConverters);
     }
 
+    /**
+     * Creates and configures an EntityLayoutFactory bean if no existing bean of this type is defined.
+     * This bean is responsible for creating EntityLayout instances.
+     *
+     * @param converterRegistryFactory The ConverterRegistryFactory for creating ConverterRegistry instances.
+     * @return An instance of the EntityLayoutFactory.
+     */
     @Bean
     @ConditionalOnMissingBean(EntityLayoutFactory.class)
     public EntityLayoutFactory entityLayoutFactory(ConverterRegistryFactory converterRegistryFactory) {

@@ -7,16 +7,6 @@ import java.util.Map;
 
 public class ScanRequest2 extends ScanRequest implements DynamoRequest {
     @Override
-    public String getPrimaryKeyName() {
-        return null;
-    }
-
-    @Override
-    public AttributeValue getPrimaryKeyValue() {
-        return null;
-    }
-
-    @Override
     public ScanRequest2 withTableName(String tableName) {
         super.withTableName(tableName);
 		return this;

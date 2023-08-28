@@ -126,9 +126,9 @@ public class ValidatedEntityLayout<T> implements EntityLayout<T> {
     private void addField(AnnotationAttribute annotationAttribute, Field field) {
         addCustomConverters(field.getType(), field.getGenericType());
 
-        Class<?> customConverterClass = annotationAttribute.getConverter();
+        Class<? extends DatabaseItemConverter> customConverterClass = annotationAttribute.getConverter();
         DatabaseItemConverter<?, ?> customConverter = null;
-        if (customConverterClass != null && !customConverterClass.equals(void.class)) {
+        if (customConverterClass != null && !customConverterClass.equals(DatabaseItemConverter.class)) {
             Type fieldGenericType = field.getGenericType();
             Type baseFieldType = fieldGenericType instanceof ParameterizedType parameterizedType ? parameterizedType : field.getType();
             customConverter = ConverterCreator.createConverter(customConverterClass, baseFieldType);

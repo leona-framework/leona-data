@@ -15,6 +15,13 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * A class representing the result of a DynamoDB item operation, such as a "get" or "put" operation.
+ * This class implements the {@link DynamoResult} interface, providing details about the operation's result,
+ * execution time, and consumed capacity, as well as AWS result metadata.
+ *
+ * @param <T> The type of the item that was retrieved or put.
+ */
 @Getter @Accessors(fluent = true)
 public class DynamoItemResult<T> implements DynamoResult<T> {
     @Getter(AccessLevel.NONE)
@@ -26,6 +33,16 @@ public class DynamoItemResult<T> implements DynamoResult<T> {
     private final Map<String, AttributeValue> attributes;
     private final Throwable error;
 
+    /**
+     * Constructs a DynamoItemResult object for a successful item operation.
+     *
+     * @param resultType     The type of DynamoDB result (e.g., "get" or "put").
+     * @param executionTime  The duration representing the execution time.
+     * @param resultResolver A function to resolve the retrieved or put item from attribute map.
+     * @param awsResult      The AWS result metadata.
+     * @param consumedCapacity The capacity consumed by the operation.
+     * @param attributes     The attribute map representing the retrieved or put item.
+     */
     public DynamoItemResult(
             DynamoResultType resultType,
             Duration executionTime,
@@ -43,6 +60,13 @@ public class DynamoItemResult<T> implements DynamoResult<T> {
         this.error = null;
     }
 
+    /**
+     * Constructs a DynamoItemResult object for a failed item operation.
+     *
+     * @param resultType    The type of DynamoDB result (e.g., "get" or "put").
+     * @param executionTime The duration representing the execution time.
+     * @param throwable     The error that occurred during the operation.
+     */
     public DynamoItemResult(
             DynamoResultType resultType,
             Duration executionTime,
@@ -57,10 +81,24 @@ public class DynamoItemResult<T> implements DynamoResult<T> {
         this.attributes = null;
     }
 
+    /**
+     * Creates a DynamoItemResult object for a "get" operation result.
+     *
+     * @param executionTime  The duration representing the execution time.
+     * @param resultResolver A function to resolve the retrieved item from attribute map.
+     * @param itemResult     The result of a "get" operation.
+     */
     public static <T> DynamoItemResult<T> getResult(Duration executionTime, Function<Map<String, AttributeValue>, T> resultResolver, GetItemResult itemResult) {
         return new DynamoItemResult<>(DynamoResultType.GET, executionTime, resultResolver, itemResult, itemResult.getConsumedCapacity(), itemResult.getItem());
     }
 
+    /**
+     * Creates a DynamoItemResult object for a "put" operation result.
+     *
+     * @param executionTime  The duration representing the execution time.
+     * @param resultResolver A function to resolve the put item from attribute map.
+     * @param itemResult     The result of a "put" operation.
+     */
     public static <T> DynamoItemResult<T> putResult(Duration executionTime, Function<Map<String, AttributeValue>, T> resultResolver, PutItemResult itemResult) {
         return new DynamoItemResult<>(DynamoResultType.GET, executionTime, resultResolver, itemResult, itemResult.getConsumedCapacity(), itemResult.getAttributes());
     }

@@ -28,13 +28,8 @@ class InitializedConverterRegistry implements ConverterRegistry {
     }
 
     @Override
-    public Type targetType() {
-        return targetType;
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
-    public <T> T parse(ConverterContext context, Type targetType, AttributeValue attributeValue) {
+    public <T> T parse(ConverterRegistryView context, Type targetType, AttributeValue attributeValue) {
         this.targetType = targetType;
         return (T) context.getConverterForType(targetType).parseAttributeValue(attributeValue, context);
     }

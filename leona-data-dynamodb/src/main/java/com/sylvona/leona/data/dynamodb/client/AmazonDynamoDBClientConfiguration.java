@@ -3,6 +3,9 @@ package com.sylvona.leona.data.dynamodb.client;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import lombok.Data;
 
+/**
+ * Provides configuration for the client used to connect with AWS DyanmoDB
+ */
 @Data
 public class AmazonDynamoDBClientConfiguration {
     /**

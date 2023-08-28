@@ -1,13 +1,11 @@
 package com.sylvona.leona.data.dynamodb.delegate;
 
 import com.amazonaws.services.dynamodbv2.model.*;
-import com.sylvona.leona.data.dynamodb.AttributeKeyValue;
 
 import java.util.Map;
 
 class PutItemRequest2 extends PutItemRequest implements DynamoRequest {
     private final String primaryKeyName;
-    private AttributeKeyValue attributeKeyValue;
 
     private PutItemRequest2() {
         primaryKeyName = null;
@@ -99,21 +97,5 @@ class PutItemRequest2 extends PutItemRequest implements DynamoRequest {
     public PutItemRequest2 withExpressionAttributeValues(Map<String, AttributeValue> expressionAttributeValues) {
         super.withExpressionAttributeValues(expressionAttributeValues);
 		return this;
-    }
-
-    @Override
-    public String getPrimaryKeyName() {
-        if (attributeKeyValue == null) {
-            attributeKeyValue = new AttributeKeyValue(primaryKeyName, getItem().get(primaryKeyName));
-        }
-        return attributeKeyValue.getKey();
-    }
-
-    @Override
-    public AttributeValue getPrimaryKeyValue() {
-        if (attributeKeyValue == null) {
-            attributeKeyValue = new AttributeKeyValue(primaryKeyName, getItem().get(primaryKeyName));
-        }
-        return attributeKeyValue.getValue();
     }
 }

@@ -17,6 +17,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * A class representing the result of retrieving multiple items from DynamoDB using the "get" operation.
+ * This class implements the {@link DynamoResult} interface, providing details about the operation's result,
+ * execution time, and consumed capacity, as well as AWS result metadata.
+ *
+ * @param <T> The type of individual items retrieved from DynamoDB.
+ */
 @Getter @Accessors(fluent = true)
 public class DynamoGetAllResult<T> implements DynamoResult<List<T>> {
     @Getter(AccessLevel.NONE)
@@ -31,6 +38,13 @@ public class DynamoGetAllResult<T> implements DynamoResult<List<T>> {
     @Getter(AccessLevel.NONE)
     private List<T> result;
 
+    /**
+     * Constructs a DynamoGetAllResult object for the "scan" operation result.
+     *
+     * @param scanResult      The result of a scan operation.
+     * @param executionTime   The duration representing the execution time.
+     * @param resultResolver A function to resolve individual items from attribute maps.
+     */
     public DynamoGetAllResult(ScanResult scanResult, Duration executionTime, Function<Map<String, AttributeValue>, T> resultResolver) {
         this.awsResult = scanResult;
         this.resultType = DynamoResultType.GET;
@@ -41,6 +55,13 @@ public class DynamoGetAllResult<T> implements DynamoResult<List<T>> {
         this.error = null;
     }
 
+    /**
+     * Constructs a DynamoGetAllResult object for the "batch get" operation result.
+     *
+     * @param batchGetItemResult The result of a batch get operation.
+     * @param executionTime      The duration representing the execution time.
+     * @param resultResolver    A function to resolve individual items from attribute maps.
+     */
     public DynamoGetAllResult(BatchGetItemResult batchGetItemResult, Duration executionTime, Function<Map<String, AttributeValue>, T> resultResolver) {
         this.awsResult = batchGetItemResult;
         this.resultType = DynamoResultType.GET;
@@ -51,6 +72,12 @@ public class DynamoGetAllResult<T> implements DynamoResult<List<T>> {
         this.error = null;
     }
 
+    /**
+     * Constructs a DynamoGetAllResult object for an error situation.
+     *
+     * @param error         The error that occurred.
+     * @param executionTime The duration representing the execution time.
+     */
     public DynamoGetAllResult(Throwable error, Duration executionTime) {
         this.resultType = DynamoResultType.GET;
         this.executionTime = executionTime;

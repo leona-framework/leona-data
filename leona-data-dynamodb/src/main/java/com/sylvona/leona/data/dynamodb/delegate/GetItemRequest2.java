@@ -3,7 +3,6 @@ package com.sylvona.leona.data.dynamodb.delegate;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.GetItemRequest;
 import com.amazonaws.services.dynamodbv2.model.ReturnConsumedCapacity;
-import com.sylvona.leona.data.dynamodb.AttributeKeyValue;
 import lombok.AccessLevel;
 import lombok.Setter;
 
@@ -11,7 +10,6 @@ import java.util.Collection;
 import java.util.Map;
 
 class GetItemRequest2 extends GetItemRequest implements DynamoRequest {
-    private AttributeKeyValue attributeKeyValue;
     @Setter(AccessLevel.PACKAGE)
     private String primaryKeyName;
 
@@ -24,14 +22,7 @@ class GetItemRequest2 extends GetItemRequest implements DynamoRequest {
     @Override
     public GetItemRequest2 withKey(Map<String, AttributeValue> key) {
         super.withKey(key);
-        if (key instanceof AttributeKeyValue akv)
-            this.attributeKeyValue = akv;
 		return this;
-    }
-
-    public GetItemRequest2 withKey(String key, String value) {
-        super.withKey(attributeKeyValue = new AttributeKeyValue(key, new AttributeValue(value)));
-        return this;
     }
 
     @Override
@@ -80,21 +71,5 @@ class GetItemRequest2 extends GetItemRequest implements DynamoRequest {
     public GetItemRequest2 withKey(Map.Entry<String, AttributeValue> hashKey, Map.Entry<String, AttributeValue> rangeKey) throws IllegalArgumentException {
         super.withKey(hashKey, rangeKey);
 		return this;
-    }
-
-    @Override
-    public String getPrimaryKeyName() {
-        if (attributeKeyValue == null) {
-            attributeKeyValue = new AttributeKeyValue(primaryKeyName, getKey().get(primaryKeyName));
-        }
-        return attributeKeyValue.getKey();
-    }
-
-    @Override
-    public AttributeValue getPrimaryKeyValue() {
-        if (attributeKeyValue == null) {
-            attributeKeyValue = new AttributeKeyValue(primaryKeyName, getKey().get(primaryKeyName));
-        }
-        return attributeKeyValue.getValue();
     }
 }

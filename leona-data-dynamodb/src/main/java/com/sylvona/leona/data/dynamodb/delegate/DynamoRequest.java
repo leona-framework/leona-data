@@ -1,9 +1,14 @@
 package com.sylvona.leona.data.dynamodb.delegate;
 
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-
+/**
+ * An interface representing a DynamoDB request with the ability to retrieve the associated table name.
+ */
 public interface DynamoRequest {
+    /**
+     * Retrieves the name of the table associated with this DynamoDB request.
+     *
+     * @return The name of the DynamoDB table.
+     */
     String getTableName();
-    String getPrimaryKeyName();
-    AttributeValue getPrimaryKeyValue();
 }
+
